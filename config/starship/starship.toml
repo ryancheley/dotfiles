@@ -1,0 +1,23 @@
+[status]
+disabled = false
+
+[character]
+format = "🦀 $symbol"
+
+[git_branch]
+always_show_remote=true
+style='bold blue'
+
+[git_commit]
+only_detached = false
+
+[python]
+symbol = '🐍 '
+# pyenv_version_name = true
+python_binary = ['./venv/bin/python', 'python', 'python3', 'python2']
+
+[aws]
+disabled=true
+
+[gcloud]
+disabled=true
