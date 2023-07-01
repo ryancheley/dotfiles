@@ -6,6 +6,7 @@
 	defaultBranch = main
 [help]
 	autocorrect = 10
+	format = web
 [push]
     autoSetupRemote = true
 [color "branch"]
@@ -36,3 +37,7 @@
     diffFilter = delta --color-only
 [merge]
     conflictStyle = zdiff3
+[branch]
+	sort = -committerdate
+[pull]
+	rebase = interactive
