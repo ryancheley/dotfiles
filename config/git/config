@@ -1,7 +1,6 @@
 [user]
 	name = Ryan Cheley
 	email = rcheley@gmail.com
-	signingkey = ed25519
 [init]
 	defaultBranch = main
 [help]
@@ -9,6 +8,7 @@
 	format = web
 [push]
     autoSetupRemote = true
+	autoSetupRemote = true
 [color "branch"]
     current = yellow reverse
     local = yellow
