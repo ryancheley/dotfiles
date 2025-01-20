@@ -14,3 +14,6 @@ mkdir -p ~/.config
 
 # Link Starship config if it doesn't exist
 [ ! -e ~/.config/starship.toml ] && ln -s "$PWD/config/starship/starship.toml" ~/.config/starship.toml
+
+# Link Neovim config if it doesn't exist
+[ ! -e ~/config/nvim ] && ln -s "$PWD/config/nvim" ~/.config/nvim
