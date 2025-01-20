@@ -16,6 +16,13 @@ mkdir -p ~/.config
 [ ! -e ~/.config/starship.toml ] && ln -s "$PWD/config/starship/starship.toml" ~/.config/starship.toml
 
 # Link Neovim config if it doesn't exist
-[ ! -e ~/config/nvim ] && ln -s "$PWD/config/nvim" ~/.config/nvim
+[ ! -e ~/.config/nvim ] && ln -s "$PWD/config/nvim" ~/.config/nvim
 
-[ ! -e ~/config/karabiner ] && ln -s "$PWD/config/karabiner" ~/.config/karabiner
+# Link karabiner config if it doesn't exist
+[ ! -e ~/.config/karabiner ] && ln -s "$PWD/config/karabiner" ~/.config/karabiner
+
+# Link pip config if it doesn't exist
+[ ! -e ~/.config/pip ] && ln -s "$PWD/config/pip" ~/.config/pip
+
+# Link uv config if it doesn't exist
+[ ! -e ~/.config/uv ] && ln -s "$PWD/config/uv" ~/.config/uv
