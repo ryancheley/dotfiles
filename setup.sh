@@ -17,3 +17,5 @@ mkdir -p ~/.config
 
 # Link Neovim config if it doesn't exist
 [ ! -e ~/config/nvim ] && ln -s "$PWD/config/nvim" ~/.config/nvim
+
+[ ! -e ~/config/karabiner ] && ln -s "$PWD/config/karabiner" ~/.config/karabiner
