@@ -3,12 +3,13 @@
 	email = rcheley@gmail.com
 [init]
 	defaultBranch = main
+	templateDir = /Users/ryan/.git-templates
 [help]
 	autocorrect = 10
 	format = web
 [push]
     autoSetupRemote = true
-	autoSetupRemote = true
+	followTags = true
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -25,6 +26,7 @@
     untracked = cyan
 [core]
     pager = delta
+	excludesfile = /Users/ryan/.gitignore
 [delta]
     # https://dandavison.github.io/delta/configuration.html
     hyperlinks = true
@@ -32,7 +34,10 @@
     navigate = true
     syntax-theme = Monokai Extended
 [diff]
-    colorMoved = default
+	colorMoved = plain
+	algorithm = histogram
+	mnemonicPrefix = true
+	renames = true
 [interactive]
     diffFilter = delta --color-only
 [merge]
@@ -40,4 +45,19 @@
 [branch]
 	sort = -committerdate
 [pull]
-	rebase = interactive
+	rebase = true
+[column]
+	ui = auto
+[tag]
+	sort = version:refname
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
