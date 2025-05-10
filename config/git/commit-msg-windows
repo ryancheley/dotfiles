@@ -1,0 +1,133 @@
+# Windows PowerShell version of the emoji commit-msg hook
+param(
+    [string]$commitMsgFile
+)
+
+function Suggest-Gitmoji {
+    # Get staged files
+    $stagedFiles = git diff --cached --name-only
+    $suggestions = @()
+    
+    # Test file patterns
+    if ($stagedFiles -match '\.(test|spec)\.') {
+        $suggestions += "✅ - Add, update, or pass tests"
+    }
+    
+    # Documentation patterns
+    if ($stagedFiles -match '\.(md|rst|txt|adoc)$|README|CHANGELOG|LICENSE') {
+        $suggestions += "📝 - Add or update documentation"
+    }
+    
+    # Configuration files
+    if ($stagedFiles -match '\.(json|yaml|yml|toml|ini|env|config|cfg)$|\.gitignore|\.editorconfig') {
+        $suggestions += "🔧 - Add or update configuration files"
+    }
+    
+    # Database migrations or changes
+    if ($stagedFiles -match '(migration|schema|models|database|db)') {
+        $suggestions += "🗃️ - Perform database related changes"
+    }
+    
+    # UI/Style files
+    if ($stagedFiles -match '\.(css|scss|sass|less|styl|html|vue|jsx|tsx)$') {
+        $suggestions += "💄 - Add or update the UI and style files"
+    }
+    
+    # CI/CD files
+    if ($stagedFiles -match '\.yml$|\.yaml$|\.github|Jenkinsfile|azure-pipelines|\.travis|\.circleci|\.gitlab-ci') {
+        $suggestions += "👷 - Add or update CI build system"
+    }
+    
+    # Dependencies
+    if ($stagedFiles -match 'package\.json|requirements\.txt|Gemfile|composer\.json|pom\.xml|build\.gradle|go\.mod|Cargo\.toml') {
+        $suggestions += "⬆️ - Upgrade dependencies"
+        $suggestions += "⬇️ - Downgrade dependencies"
+        $suggestions += "📌 - Pin dependencies to specific versions"
+    }
+    
+    # Assets
+    if ($stagedFiles -match '\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|otf|mp4|webm|mp3|wav)$') {
+        $suggestions += "🍱 - Add or update assets"
+    }
+    
+    # Dockerfile or Docker-related
+    if ($stagedFiles -match 'Dockerfile|docker-compose') {
+        $suggestions += "🐋 - Docker related changes"
+    }
+    
+    # Performance optimization
+    if ($stagedFiles -match '(cache|performance|optimization|perf)') {
+        $suggestions += "⚡️ - Improve performance"
+    }
+    
+    # Security files
+    if ($stagedFiles -match '(security|auth|jwt|oauth|ssl|tls|cert)') {
+        $suggestions += "🔒️ - Fix security or privacy issues"
+    }
+    
+    # Add generic suggestions based on file extensions
+    if ($stagedFiles -match '\.(py|js|ts|java|rb|go|rs|swift|kt|cpp|c|cs)$') {
+        $suggestions += "✨ - Introduce new features"
+        $suggestions += "🐛 - Fix a bug"
+        $suggestions += "🎨 - Improve structure / format of the code"
+        $suggestions += "♻️ - Refactor code"
+    }
+    
+    # If we have suggestions, display them
+    if ($suggestions.Count -gt 0) {
+        Write-Host "📋 Based on the staged files, we suggest these gitmoji emojis:"
+        foreach ($suggestion in $suggestions) {
+            Write-Host $suggestion
+        }
+        Write-Host ""
+        return $true
+    }
+    else {
+        return $false
+    }
+}
+
+# Read the commit message
+$commitMsg = Get-Content $commitMsgFile -Raw
+
+# Check if the commit message starts with a letter (should start with emoji)
+if ($commitMsg -match '^[a-zA-Z]') {
+    Write-Host "❌ Invalid commit message format." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Commit message must start with an emoji."
+    Write-Host ""
+    Write-Host "Analyzing staged files for suggestions..."
+    
+    # Show suggestions
+    if (-not (Suggest-Gitmoji)) {
+        Write-Host "No specific suggestions found based on your staged files."
+        Write-Host "Here are some common gitmoji emojis:"
+        Write-Host ""
+        Write-Host "✨ - Introduce new features"
+        Write-Host "🐛 - Fix a bug"
+        Write-Host "🎨 - Improve structure / format of the code"
+        Write-Host "⚡️ - Improve performance"
+        Write-Host "🔥 - Remove code or files"
+        Write-Host "📝 - Add or update documentation"
+        Write-Host "♻️ - Refactor code"
+        Write-Host "✅ - Add, update, or pass tests"
+        Write-Host ""
+    }
+    
+    Write-Host "Format: <emoji> [scope]: <description>"
+    Write-Host "Example: ✨ (ui): add new login page"
+    Write-Host ""
+    Write-Host "For the full list of gitmoji emojis, visit: https://gitmoji.dev"
+    exit 1
+}
+
+# Check for scope format if present
+if ($commitMsg -match '^[^a-zA-Z]\s*\(.*\)' -and $commitMsg -notmatch '^[^a-zA-Z]\s*\([a-z-]+\):') {
+    Write-Host "❌ Invalid scope format." -ForegroundColor Red
+    Write-Host "If using a scope, format should be: <emoji> (scope): <description>"
+    Write-Host "Example: ✨ (ui): add new login page"
+    exit 1
+}
+
+# If we get here, the commit message is valid
+exit 0
