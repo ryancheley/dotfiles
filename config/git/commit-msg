@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# Path to the commit message file
+commit_msg_file="$1"
+
+# Function to analyze staged files and suggest gitmoji
+suggest_gitmoji() {
+    local staged_files
+    staged_files=$(git diff --cached --name-only)
+    local suggestions=()
+    
+    # Test file patterns
+    if echo "$staged_files" | grep -E '\.(test|spec)\.' >/dev/null; then
+        suggestions+=("✅ - Add, update, or pass tests")
+    fi
+    
+    # Documentation patterns
+    if echo "$staged_files" | grep -E '\.(md|rst|txt|adoc)$|README|CHANGELOG|LICENSE' >/dev/null; then
+        suggestions+=("📝 - Add or update documentation")
+    fi
+    
+    # Configuration files
+    if echo "$staged_files" | grep -E '\.(json|yaml|yml|toml|ini|env|config|cfg)$|\.gitignore|\.editorconfig' >/dev/null; then
+        suggestions+=("🔧 - Add or update configuration files")
+    fi
+    
+    # Database migrations or changes
+    if echo "$staged_files" | grep -E '(migration|schema|models|database|db)' >/dev/null; then
+        suggestions+=("🗃️ - Perform database related changes")
+    fi
+    
+    # UI/Style files
+    if echo "$staged_files" | grep -E '\.(css|scss|sass|less|styl|html|vue|jsx|tsx)$' >/dev/null; then
+        suggestions+=("💄 - Add or update the UI and style files")
+    fi
+    
+    # CI/CD files
+    if echo "$staged_files" | grep -E '\.yml$|\.yaml$|\.github|Jenkinsfile|azure-pipelines|\.travis|\.circleci|\.gitlab-ci' >/dev/null; then
+        suggestions+=("👷 - Add or update CI build system")
+    fi
+    
+    # Dependencies
+    if echo "$staged_files" | grep -E 'package\.json|requirements\.txt|Gemfile|composer\.json|pom\.xml|build\.gradle|go\.mod|Cargo\.toml' >/dev/null; then
+        suggestions+=("⬆️ - Upgrade dependencies")
+        suggestions+=("⬇️ - Downgrade dependencies")
+        suggestions+=("📌 - Pin dependencies to specific versions")
+    fi
+    
+    # Assets
+    if echo "$staged_files" | grep -E '\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|otf|mp4|webm|mp3|wav)$' >/dev/null; then
+        suggestions+=("🍱 - Add or update assets")
+    fi
+    
+    # Dockerfile or Docker-related
+    if echo "$staged_files" | grep -E 'Dockerfile|docker-compose' >/dev/null; then
+        suggestions+=("🐋 - Docker related changes")
+    fi
+    
+    # Performance optimization
+    if echo "$staged_files" | grep -E '(cache|performance|optimization|perf)' >/dev/null; then
+        suggestions+=("⚡️ - Improve performance")
+    fi
+    
+    # Security files
+    if echo "$staged_files" | grep -E '(security|auth|jwt|oauth|ssl|tls|cert)' >/dev/null; then
+        suggestions+=("🔒️ - Fix security or privacy issues")
+    fi
+    
+    # Add generic suggestions based on file extensions
+    if echo "$staged_files" | grep -E '\.(py|js|ts|java|rb|go|rs|swift|kt|cpp|c|cs)$' >/dev/null; then
+        suggestions+=("✨ - Introduce new features")
+        suggestions+=("🐛 - Fix a bug")
+        suggestions+=("🎨 - Improve structure / format of the code")
+        suggestions+=("♻️ - Refactor code")
+    fi
+    
+    # If we have suggestions, display them and return 0
+    if [ ${#suggestions[@]} -gt 0 ]; then
+        echo "📋 Based on the staged files, we suggest these gitmoji emojis:"
+        printf '%s\n' "${suggestions[@]}"
+        echo ""
+        return 0
+    else
+        # Return 1 if no suggestions found
+        return 1
+    fi
+}
+
+# Read the commit message
+commit_msg=$(cat "$commit_msg_file")
+
+# Simple check: just ensure the message doesn't start with a letter
+# This allows any emoji to be at the start without specifying Unicode ranges
+if [[ $commit_msg =~ ^[a-zA-Z] ]]; then
+    echo "❌ Invalid commit message format."
+    echo ""
+    echo "Commit message must start with an emoji."
+    echo ""
+    # Show suggestions based on the current commit
+    echo "Analyzing staged files for suggestions..."
+    
+    # Call the function and check if it found suggestions
+    if ! suggest_gitmoji; then
+        # Only show a minimal list if no specific suggestions were found
+        echo "No specific suggestions found based on your staged files."
+        echo "Here are some common gitmoji emojis:"
+        echo ""
+        echo "✨ - Introduce new features"
+        echo "🐛 - Fix a bug"
+        echo "🎨 - Improve structure / format of the code"
+        echo "⚡️ - Improve performance"
+        echo "🔥 - Remove code or files"
+        echo "📝 - Add or update documentation"
+        echo "♻️ - Refactor code"
+        echo "✅ - Add, update, or pass tests"
+        echo ""
+    fi
+    
+    echo "Format: <emoji> [scope]: <description>"
+    echo "Example: ✨ (ui): add new login page"
+    echo ""
+    echo "For the full list of gitmoji emojis, visit: https://gitmoji.dev"
+    exit 1
+fi
+
+# Optional: Check for scope format if present
+# Skip emoji validation here since any emoji is allowed
+if [[ $commit_msg =~ ^[^a-zA-Z][[:space:]]*\(.*\) ]] && ! [[ $commit_msg =~ ^[^a-zA-Z][[:space:]]*\([a-z-]+\): ]]; then
+    echo "❌ Invalid scope format."
+    echo "If using a scope, format should be: <emoji> (scope): <description>"
+    echo "Example: ✨ (ui): add new login page"
+    exit 1
+fi
+
+# If we get here, the commit message is valid
+exit 0
