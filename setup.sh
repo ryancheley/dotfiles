@@ -29,3 +29,8 @@ mkdir -p ~/.config
 
 # Link uv config if it doesn't exist
 [ ! -e ~/.config/uv ] && ln -s "$PWD/config/uv" ~/.config/uv
+
+# Link atuin config if it doesn't exist
+[ ! -e ~/.config/atuin ] && ln -s "$PWD/config/atuin" ~/.config/atuin
+
+
