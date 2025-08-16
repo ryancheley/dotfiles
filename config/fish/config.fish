@@ -17,3 +17,4 @@ if status is-interactive
 end
 
 starship init fish | source
+set -x PIPX_HOME /Users/ryan/.config/pipx/
