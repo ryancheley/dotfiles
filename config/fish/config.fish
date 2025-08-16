@@ -13,6 +13,7 @@ if status is-interactive
     abbr --add l ls -lah
     abbr --add gst git status
     abbr --add lsa ls -lah
+    abbr bl 'brew list -1'
 end
 
 starship init fish | source

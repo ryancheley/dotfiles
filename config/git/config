@@ -61,3 +61,5 @@
 	autoSquash = true
 	autoStash = true
 	updateRefs = true
+[web]
+	browser = open
