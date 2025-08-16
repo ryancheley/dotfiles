@@ -8,13 +8,21 @@ I'd really rather not have to use Home Brew (not for any particular reason ... j
 
 - git
 - just
+- op
 - pipx
 
 ### git
+
 This is to get the HTML docs for git. I find these easier to read than `man` pages.
 
 ### just
+
 Because it's awesome
 
+### op
+
+To be able to use the 1Password CLI
+
 ### pipx
+
 For `justpath`
