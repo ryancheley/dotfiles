@@ -4,10 +4,16 @@ scan_timeout = 1000
 
 [aws]
 disabled = true
-style = "bold #ffb86c"
 
 [battery]
-disabled = false
+format = "[$symbol $percentage]($style) "
+empty_symbol = "🪫"
+charging_symbol = "🔋"
+full_symbol = '🔋'
+
+[[battery.display]]
+threshold = 10
+style = 'red'
 
 [bun]
 disabled = true
@@ -25,17 +31,25 @@ style = "bold #50fa7b"
 [direnv]
 disabled = true
 
-# [docker_context]
-# # disabled = false
-# # only_with_files = false
-# symbol = "🐳 "
-
 [git_branch]
+always_show_remote=true
 style = "bold #ff79c6"
 symbol = " "
 
+[git_commit]
+only_detached = false
+
+[git_metrics]
+disabled = false
+
 [git_status]
 style = "bold #ff5555"
+
+[python]
+symbol = '🐍 '
+# pyenv_version_name = true
+python_binary = ['./.venv/bin/activate', './venv/bin/python', 'python', 'python3', 'python2']
+format = '| [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 
 [hostname]
 style = "bold #bd93f9"
@@ -44,7 +58,7 @@ style = "bold #bd93f9"
 disabled = true
 
 [nodejs]
-disabled = true
+format = 'via [🤖 $version](bold green) '
 
 [package]
 disabled = true
@@ -54,3 +68,9 @@ format = "[$user]($style) on "
 style_user = "bold #8be9fd"
 disabled = false
 show_always = true
+
+[docker_context]
+format = '| [$symbol$context]($style) '
+
+[terraform]
+format = '| [$symbol$workspace]($style) '
