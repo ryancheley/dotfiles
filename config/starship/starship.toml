@@ -31,6 +31,9 @@ style = "bold #50fa7b"
 [direnv]
 disabled = true
 
+[gcloud]
+disabled = true
+
 [git_branch]
 always_show_remote=true
 style = "bold #ff79c6"
@@ -64,7 +67,7 @@ format = 'via [🤖 $version](bold green) '
 disabled = true
 
 [username]
-format = "[$user]($style) on "
+format = "[$user]($style) at "
 style_user = "bold #8be9fd"
 disabled = false
 show_always = true
