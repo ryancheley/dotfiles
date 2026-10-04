@@ -1,0 +1,14 @@
+# Custom direnv layouts. Activate per-project with a `.envrc` containing:
+#   layout uv
+#
+# direnvrc runs in bash regardless of your login shell; it only exports env
+# vars (VIRTUAL_ENV + PATH), so fish picks the venv up fine.
+layout_uv() {
+    if [[ ! -d .venv ]]; then
+        log_status "no .venv found; creating one with uv"
+        uv venv
+    fi
+    VIRTUAL_ENV="$(pwd)/.venv"
+    PATH_add "$VIRTUAL_ENV/bin"
+    export VIRTUAL_ENV
+}
