@@ -33,4 +33,10 @@ mkdir -p ~/.config
 # Link atuin config if it doesn't exist
 [ ! -e ~/.config/atuin ] && ln -s "$PWD/config/atuin" ~/.config/atuin
 
+# Link direnv config if it doesn't exist
+[ ! -e ~/.config/direnv ] && ln -s "$PWD/config/direnv" ~/.config/direnv
+
+# Install Homebrew packages from the Brewfile
+command -v brew >/dev/null 2>&1 && brew bundle --file="$PWD/Brewfile"
+
 

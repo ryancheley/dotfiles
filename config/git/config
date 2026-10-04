@@ -63,3 +63,16 @@
 	updateRefs = true
 [web]
 	browser = open
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+    required = true
+[includeIf "gitdir:/Users/ryan/Documents/ardotconsulting/"]
+      path = /Users/ryan/Documents/ardotconsulting/.gitconfig
