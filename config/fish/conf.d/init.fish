@@ -2,7 +2,7 @@
 
 # Prompt + history
 starship init fish | source
-status is-interactive && atuin init fish | source
+status is-interactive; and type -q atuin; and atuin init fish | source
 
 # direnv (spelled "dirnev" in the old config.fish — fixed)
 direnv hook fish | source
