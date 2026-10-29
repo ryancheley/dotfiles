@@ -3,7 +3,7 @@
 	email = rcheley@gmail.com
 [init]
 	defaultBranch = main
-	templateDir = /Users/ryan/.git-templates
+	templateDir = ~/.config/git/template
 [help]
 	autocorrect = 10
 	format = web
@@ -25,8 +25,8 @@
     changed = green
     untracked = cyan
 [core]
-    pager = delta
-	excludesfile = /Users/ryan/.gitignore
+    # Fall back to less/cat on machines without delta, so git log/diff/add -p never break.
+    pager = command -v delta >/dev/null && exec delta || exec less
 [delta]
     # https://dandavison.github.io/delta/configuration.html
     hyperlinks = true
@@ -39,7 +39,7 @@
 	mnemonicPrefix = true
 	renames = true
 [interactive]
-    diffFilter = delta --color-only
+    diffFilter = command -v delta >/dev/null && exec delta --color-only || exec cat
 [merge]
     conflictStyle = zdiff3
 [branch]
@@ -61,14 +61,12 @@
 	autoSquash = true
 	autoStash = true
 	updateRefs = true
-[web]
-	browser = open
 [credential "https://github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
