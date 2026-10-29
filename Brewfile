@@ -86,5 +86,4 @@ uv "ansible", with: ["ansible-core"]
 uv "pre-commit"
 uv "tox"
 uv "youtrack-cli"
-npm "@anthropic-ai/claude-code"
 npm "corepack"
