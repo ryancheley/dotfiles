@@ -4,16 +4,28 @@ These are my versioned dotfiles based on the ideas from the book [Boost Your Git
 
 ## Install
 
-On a fresh Mac:
+On a new Mac, server or Pi (macOS, or apt-based Linux on x86_64/aarch64):
 
 ```sh
-git clone <this-repo> ~/code/dotfiles
-cd ~/code/dotfiles
-./setup.sh
+git clone https://github.com/ryancheley/dotfiles.git ~/dotfiles
+~/dotfiles/setup.sh --dry-run   # show what would change
+~/dotfiles/setup.sh
 ```
 
-`setup.sh` symlinks each config into `~/.config` and, if Homebrew is present,
-installs everything in the `Brewfile`.
+`setup.sh` is safe to re-run. It:
+
+- installs packages (`brew bundle` on macOS; fish, git, direnv, delta via apt on Linux)
+  and starship, atuin and uv from their official installers into `~/.local/bin` / `~/.atuin/bin`
+- symlinks each config into `~/.config`, moving anything already there to
+  `~/.dotfiles-backup/<timestamp>/`
+- makes fish the login shell. Root on Linux keeps bash as its login shell (so ssh,
+  scp and Ansible get a POSIX shell) and interactive logins `exec fish` from `~/.bashrc`
+- prints a summary and exits non-zero if any step failed
+
+It needs root or passwordless sudo when run non-interactively over ssh. On the
+servers it's run by the `dotfiles.yml` playbook in `server-maintenance`.
+
+After the first run, `atuin login` once to sync history.
 
 ### Secrets
 

@@ -1,20 +1,11 @@
-# Tool shell integrations and PATH setup.
+# Tool shell integrations. Each is skipped when the tool isn't installed, so a
+# fresh server doesn't print errors on every shell start. PATH is in 00-path.fish,
+# atuin in atuin.fish.
 
-# Prompt + history
-starship init fish | source
-status is-interactive; and type -q atuin; and atuin init fish | source
+type -q starship; and starship init fish | source
+type -q direnv; and direnv hook fish | source
 
-# direnv (spelled "dirnev" in the old config.fish — fixed)
-direnv hook fish | source
-
-# bun
 set --export BUN_INSTALL "$HOME/.bun"
-fish_add_path $BUN_INSTALL/bin
-
-# Docker Desktop
-fish_add_path /Users/ryan/.docker/bin
 
 # Google Cloud SDK
-if test -f '/Users/ryan/Downloads/google-cloud-sdk/path.fish.inc'
-    source '/Users/ryan/Downloads/google-cloud-sdk/path.fish.inc'
-end
+test -f ~/Downloads/google-cloud-sdk/path.fish.inc; and source ~/Downloads/google-cloud-sdk/path.fish.inc

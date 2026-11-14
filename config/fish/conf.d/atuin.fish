@@ -1,3 +1,5 @@
+status is-interactive; and type -q atuin; or exit
+
 set -gx ATUIN_NOBIND "true"
 atuin init fish | source
 
